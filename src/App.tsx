@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Login from './components/Login';
 import Logout from './components/Logout';
 import { Route, Routes } from 'react-router-dom';
+import bg2Image from './components/img/bg6.jpg';
+
 
 const App: React.FC = () => {
   const [token, setToken] = useState<string>(localStorage.getItem('token') || '');
@@ -12,7 +14,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className='text-white h-screen flex justify-center items-center bg-cover bg-center bg-no-repeat' style={{backgroundImage: `url(${bg2Image})`}}>
       {token ? (
         <div>
           <h1>Welcome, {username}!</h1>
