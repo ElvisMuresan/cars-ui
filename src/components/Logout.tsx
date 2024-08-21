@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { Button } from 'flowbite-react';
 
 interface LogoutProps {
   token: string;
@@ -26,7 +27,7 @@ const Logout: React.FC<LogoutProps> = ({ token, clearToken }) => {
     }
   };
 
-  return <button onClick={handleLogout}>Logout</button>;
+  return <Button onClick={handleLogout}>Logout</Button>;
 };
 
 export default Logout;

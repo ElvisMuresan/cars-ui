@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Button } from 'flowbite-react';
 
 interface LoginProps {
   setToken: (token: string) => void;
@@ -40,7 +41,7 @@ const Login: React.FC<LoginProps> = ({ setToken, setUsername }) => {
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         </div>
         {error && <p style={{ color: 'red' }}>{error}</p>}
-        <button type="submit">Login</button>
+        <Button type="submit">Login</Button>
       </form>
     </div>
   );
