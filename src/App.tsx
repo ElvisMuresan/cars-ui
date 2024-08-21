@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Login from './components/Login';
 import Logout from './components/Logout';
+import { Route, Routes } from 'react-router-dom';
 
 const App: React.FC = () => {
   const [token, setToken] = useState<string>(localStorage.getItem('token') || '');
@@ -18,7 +19,9 @@ const App: React.FC = () => {
           <Logout token={token} clearToken={clearToken} />
         </div>
       ) : (
-        <Login setToken={setToken} setUsername={setUsername}/>
+        <Routes>
+        <Route path='login' element={<Login setToken={setToken} setUsername={setUsername}/>} />
+        </Routes>
       )}
     </div>
   );
