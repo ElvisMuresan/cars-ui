@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Login from './components/Login';
 import Logout from './components/Logout';
 import { Route, Routes } from 'react-router-dom';
-import bg2Image from './components/img/bg6.jpg';
+import bg2Image from './components/img/bg7.jpg';
 import CarsList from './components/CarsList';
 
 

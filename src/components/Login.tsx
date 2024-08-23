@@ -32,7 +32,7 @@ const Login: React.FC<LoginProps> = ({ setToken, setUsername }) => {
 
   return (
     <div>
-      <div className='bg-slate-800 border border-slate-400 rounded-md p-8 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative'>
+      <div className='bg-slate-800 border border-slate-400 rounded-md p-14 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative'>
         <h1 className='text-4xl text-white font-bold text-center mb-6'>Login</h1>
         <form onSubmit={handleLogin}>
           <div className='relative my-4'>
@@ -56,7 +56,7 @@ const Login: React.FC<LoginProps> = ({ setToken, setUsername }) => {
             <input 
               type="password" 
               id="password" 
-              className='peer block w-72 py-2.5 px-0 text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-cyan-700'
+              className='peer block w-72 py-2.5 px-0 text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-cyan-700'
               placeholder=" " 
               value={password} 
               onChange={(e) => setPassword(e.target.value)} 
