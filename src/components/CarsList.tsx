@@ -47,8 +47,8 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
   const filteredCars = cars.filter(car => 
     car.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
     car.model.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    car.engine.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    car.id.toString().includes(searchTerm)
+    car.id.toString().includes(searchTerm) ||
+    car.horsePower.toString().includes(searchTerm) 
   );
 
   if (loading) {
@@ -75,7 +75,7 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
             <th className="text-right px-5 py-3 border-b">Id</th>
             <th className="text-right px-5 py-3 border-b">Brand</th>
             <th className="text-right px-5 py-3 border-b">Model</th>
-            <th className="text-right px-5 py-3 border-b">Engine</th>
+            <th className="text-right px-5 py-3 border-b">Horse Power</th>
           </tr>
         </thead>
         <tbody>
@@ -84,7 +84,7 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
               <td className="text-center border px-4 py-2">{car.id}</td>
               <td className="text-center border px-4 py-2">{car.brand}</td>
               <td className="text-center border px-4 py-2">{car.model}</td>
-              <td className="text-center border px-4 py-2">{car.engine}</td>
+              <td className="text-center border px-4 py-2">{car.horsePower}</td>
             </tr>
           ))}
         </tbody>
