@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { FaSortUp, FaSortDown } from 'react-icons/fa';
+import { Button } from 'flowbite-react';
 
 interface Car {
   id: number;
@@ -78,16 +79,23 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
     return <p>{error}</p>;
   }
 
+  const navigateToAddCar = () => {
+    navigate('/add-car');
+  };
+
   return (
     <div >
       <h2 className="text-2xl mb-4">Cars List</h2>
+      <div className="flex items-center space-x-4 mb-4">
       <input
         type="text"
         placeholder="Filter by any field..."
-        className="mb-4 p-2 rounded border bg-slate-800"
+        className="p-2 rounded border bg-slate-800 h-12 flex-1"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
+      <Button className='w-full text-[18px] rounded py-2 h-12 px-4 max-w-xs' onClick={navigateToAddCar}>Add New Car</Button>
+      </div>
       <table className="mt-11 table-auto mb-4 w-full bg-slate-800 border-collapse border border-slate-400 rounded-md p-14 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative">
         <thead>
           <tr>

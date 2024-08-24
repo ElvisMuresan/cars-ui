@@ -5,6 +5,7 @@ import { Route, Routes } from 'react-router-dom';
 import bg2Image from './components/img/bg7.jpg';
 import CarsList from './components/CarsList';
 import CarDetails from './components/CarDetails';
+import AddCar from './components/AddCar';
 
 
 const App: React.FC = () => {
@@ -26,6 +27,7 @@ const App: React.FC = () => {
         <Routes>
             <Route path="/" element={<CarsList token={token} />} />
             <Route path="/:id" element={<CarDetails token={token} />} />
+            <Route path="/add-car" element={<AddCar token={token} />} />
           </Routes>
         </>
       ) : (
