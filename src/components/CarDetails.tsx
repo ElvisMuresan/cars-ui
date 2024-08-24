@@ -53,7 +53,7 @@ const CarDetails: React.FC<CarDetailsProps> = ({ token }) => {
   }
 
   return (
-    <div className="mt-8">
+    <div className="mt-11 table-auto mb-4 w-full bg-slate-800 border-collapse border border-slate-400 rounded-md p-14 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative">
       <h2 className="text-3xl mb-4">Car Details</h2>
       <ul>
         <li><strong>ID:</strong> {car.id}</li>
