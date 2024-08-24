@@ -4,6 +4,7 @@ import Logout from './components/Logout';
 import { Route, Routes } from 'react-router-dom';
 import bg2Image from './components/img/bg7.jpg';
 import CarsList from './components/CarsList';
+import CarDetails from './components/CarDetails';
 
 
 const App: React.FC = () => {
@@ -22,11 +23,14 @@ const App: React.FC = () => {
           <h1>Welcome, {username}!</h1>
           <Logout token={token} clearToken={clearToken} />
         </div>
-        <CarsList token={token} />
+        <Routes>
+            <Route path="/" element={<CarsList token={token} />} />
+            <Route path="/:id" element={<CarDetails token={token} />} />
+          </Routes>
         </>
       ) : (
         <Routes>
-        <Route path='login' element={<Login setToken={setToken} setUsername={setUsername}/>} />
+        <Route path='/' element={<Login setToken={setToken} setUsername={setUsername}/>} />
         </Routes>
       )}
     </div>

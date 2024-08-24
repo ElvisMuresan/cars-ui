@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Button } from 'flowbite-react';
+import { useNavigate } from 'react-router-dom';
 
 interface LogoutProps {
   token: string;
@@ -8,6 +9,7 @@ interface LogoutProps {
 }
 
 const Logout: React.FC<LogoutProps> = ({ token, clearToken }) => {
+  const navigate = useNavigate()
   const handleLogout = async () => {
     try {
       await axios.post(
@@ -22,6 +24,7 @@ const Logout: React.FC<LogoutProps> = ({ token, clearToken }) => {
       clearToken();
       localStorage.removeItem('token');
       localStorage.removeItem('username');
+      navigate("/")
     } catch (err) {
       console.error('Logout failed', err);
     }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 interface Car {
   id: number;
@@ -18,6 +19,7 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
   const [cars, setCars] = useState<Car[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchCars = async () => {
@@ -37,6 +39,10 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
 
     fetchCars();
   }, [token]);
+
+  const fetchCarById = (id: number) => {
+    navigate(`/${id}`)
+  }
 
   if (loading) {
     return <p>Loading...</p>;
@@ -64,7 +70,7 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
           {cars.map(car => (
             <tr className="cursor-pointer hover:bg-slate-600 transition-colors" key={car.id}>
               <td className="text-center border px-4 py-2">{car.id}</td>
-              <td className="text-center border px-4 py-2">{car.brand}</td>
+              <td className="text-center border px-4 py-2" onClick={() => fetchCarById(car.id)}>{car.brand}</td>
               <td className="text-center border px-4 py-2">{car.model}</td>
               <td className="text-center border px-4 py-2">{car.color}</td>
               <td className="text-center border px-4 py-2">{car.engine}</td>
