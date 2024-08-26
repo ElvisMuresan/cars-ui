@@ -41,3 +41,15 @@ export const logoutUser = async (token: string) => {
         throw new Error('Failed to fetch cars')
     }
   }
+
+  export const deleteCarById = async (id: number, token: string) => {
+    try {
+        await axios.delete(`${BASE_URL}/cars/${id}`, {
+            headers: {
+                Authorization: token,
+            },
+        });
+    } catch (error) {
+        throw new Error ('Failed to delete car');
+    }
+  };

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { FaSortUp, FaSortDown } from 'react-icons/fa';
 import { Button, Modal } from 'flowbite-react';
-import { fetchCars } from './api/car-api';
+import { deleteCarById, fetchCars } from './api/car-api';
 
 interface Car {
   id: number;
@@ -61,14 +61,10 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
     setShowDeleteModal(true)
   }
 
-  const deleteCar = async () => {
+  const handleDeleteCar = async () => {
     if(!selectedCar) return;
     try {
-      await axios.delete(`http://localhost:3000/cars/${selectedCar.id}`, {
-        headers: {
-          Authorization: token,
-        },
-      });
+      await deleteCarById(selectedCar.id, token)
       setCars(cars.filter(car => car.id !== selectedCar.id));
       setShowDeleteModal(false)
     } catch (error) {
@@ -213,7 +209,7 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
             </p>
           </Modal.Body>
           <Modal.Footer>
-            <Button color="failure" onClick={deleteCar}>
+            <Button color="failure" onClick={handleDeleteCar}>
               Confirm
             </Button>
             <Button color="gray" onClick={() => setShowDeleteModal(false)}>
