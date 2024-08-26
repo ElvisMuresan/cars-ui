@@ -83,6 +83,10 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
     navigate('/add-car');
   };
 
+  const navigateToEditCar = (id: number) => {
+    navigate(`/edit-car/${id}`);
+  };
+
   return (
     <div >
       <h2 className="text-2xl mb-4">Cars List</h2>
@@ -99,23 +103,26 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
       <table className="mt-11 table-auto mb-4 w-full bg-slate-800 border-collapse border border-slate-400 rounded-md p-14 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative">
         <thead>
           <tr>
-            <th className="text-right px-5 py-3 border-b cursor-pointer" onClick={() => sortCars('id')}>
+            <th className="text-center px-5 py-3 border-b cursor-pointer" onClick={() => sortCars('id')}>
               Id {sortKey === 'id' && (sortOrder === 'asc' ? <FaSortUp className="inline-block ml-2"/> : <FaSortDown className="inline-block ml-2"/>)}
             </th>
-            <th className="text-right px-5 py-3 border-b cursor-pointer" onClick={() => sortCars('brand')}>
+            <th className="text-center px-5 py-3 border-b cursor-pointer" onClick={() => sortCars('brand')}>
               Brand {sortKey === 'brand' && (sortOrder === 'asc' ? <FaSortUp className="inline-block ml-2"/> : <FaSortDown className="inline-block ml-2"/>)}
             </th>
-            <th className="text-right px-5 py-3 border-b cursor-pointer" onClick={() => sortCars('model')}>
+            <th className="text-center px-5 py-3 border-b cursor-pointer" onClick={() => sortCars('model')}>
               Model {sortKey === 'model' && (sortOrder === 'asc' ? <FaSortUp className="inline-block ml-2"/> : <FaSortDown className="inline-block ml-2"/>)}
             </th>
-            <th className="text-right px-5 py-3 border-b cursor-pointer" onClick={() => sortCars('color')}>
+            <th className="text-center px-5 py-3 border-b cursor-pointer" onClick={() => sortCars('color')}>
               Color {sortKey === 'color' && (sortOrder === 'asc' ? <FaSortUp className="inline-block ml-2"/> : <FaSortDown className="inline-block ml-2"/>)}
             </th>
-            <th className="text-right px-5 py-3 border-b cursor-pointer" onClick={() => sortCars('engine')}>
+            <th className="text-center px-5 py-3 border-b cursor-pointer" onClick={() => sortCars('engine')}>
               Engine {sortKey === 'engine' && (sortOrder === 'asc' ? <FaSortUp className="inline-block ml-2"/> : <FaSortDown className="inline-block ml-2"/>)}
             </th>
-            <th className="text-right px-5 py-3 border-b cursor-pointer" onClick={() => sortCars('horsePower')}>
+            <th className="text-center px-5 py-3 border-b cursor-pointer" onClick={() => sortCars('horsePower')}>
               HorsePower {sortKey === 'horsePower' && (sortOrder === 'asc' ? <FaSortUp className="inline-block ml-2"/> : <FaSortDown className="inline-block ml-2"/>)}
+            </th>
+            <th className="text-center px-5 py-3 border-b">
+              Delete / Edit
             </th>
           </tr>
         </thead>
@@ -128,6 +135,24 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
               <td className="text-center border px-4 py-2">{car.color}</td>
               <td className="text-center border px-4 py-2">{car.engine}</td>
               <td className="text-center border px-4 py-2">{car.horsePower}</td>
+              <td className="text-center px-4 py-2 border">
+                <div className="flex justify-end">
+                  <Button
+                    className="hover:font-bold mr-5"
+                    color="failure"
+                    gradientMonochrome="failure"
+                  >
+                    Delete
+                  </Button>
+
+                  <Button
+                    gradientMonochrome="cyan"
+                    onClick={() => navigateToEditCar(car.id)}
+                  >
+                    Edit
+                  </Button>
+                </div>
+              </td>
             </tr>
           ))}
         </tbody>

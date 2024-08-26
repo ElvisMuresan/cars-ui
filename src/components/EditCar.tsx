@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from 'flowbite-react';
 
-interface AddCarProps {
+interface EditCarProps {
   token: string;
 }
 
-const AddCar: React.FC<AddCarProps> = ({ token }) => {
+const EditCar: React.FC<EditCarProps> = ({ token }) => {
+  const { id } = useParams<{ id: string }>();
   const [brand, setBrand] = useState<string>('');
   const [model, setModel] = useState<string>('');
   const [color, setColor] = useState<string>('');
@@ -15,11 +16,33 @@ const AddCar: React.FC<AddCarProps> = ({ token }) => {
   const [horsePower, setHorsePower] = useState<number>(0);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchCar = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/cars/${id}`, {
+          headers: {
+            Authorization: token,
+          },
+        });
+        const car = response.data;
+        setBrand(car.brand);
+        setModel(car.model);
+        setColor(car.color);
+        setEngine(car.engine);
+        setHorsePower(car.horsePower);
+      } catch (error) {
+        console.error('Failed to fetch car details', error);
+      }
+    };
+
+    fetchCar();
+  }, [id, token]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post(
-        'http://localhost:3000/cars',
+      await axios.put(
+        `http://localhost:3000/cars/${id}`,
         { brand, model, color, engine, horsePower },
         {
           headers: {
@@ -27,15 +50,15 @@ const AddCar: React.FC<AddCarProps> = ({ token }) => {
           },
         }
       );
-      navigate('/'); // Redirecționează la lista de mașini după adăugare
+      navigate('/'); // Redirecționează la lista de mașini după actualizare
     } catch (error) {
-      console.error('Failed to add car', error);
+      console.error('Failed to update car', error);
     }
   };
 
   return (
     <div className="max-w-md mx-auto mt-10">
-      <h2 className="text-2xl mb-4">Add New Car</h2>
+      <h2 className="text-2xl mb-4">Edit Car</h2>
       <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -97,7 +120,7 @@ const AddCar: React.FC<AddCarProps> = ({ token }) => {
             type="submit"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           >
-            Add Car
+            Update Car
           </Button>
         </div>
       </form>
@@ -105,4 +128,4 @@ const AddCar: React.FC<AddCarProps> = ({ token }) => {
   );
 };
 
-export default AddCar;
+export default EditCar;

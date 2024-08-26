@@ -6,6 +6,7 @@ import bg2Image from './components/img/bg7.jpg';
 import CarsList from './components/CarsList';
 import CarDetails from './components/CarDetails';
 import AddCar from './components/AddCar';
+import EditCar from './components/EditCar';
 
 
 const App: React.FC = () => {
@@ -28,6 +29,7 @@ const App: React.FC = () => {
             <Route path="/" element={<CarsList token={token} />} />
             <Route path="/:id" element={<CarDetails token={token} />} />
             <Route path="/add-car" element={<AddCar token={token} />} />
+            <Route path="/edit-car/:id" element={<EditCar token={token} />} />
           </Routes>
         </>
       ) : (
