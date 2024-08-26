@@ -162,14 +162,14 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
         </thead>
         <tbody>
           {filteredCars.map(car => (
-            <tr className="cursor-pointer hover:bg-slate-600 transition-colors" key={car.id}>
+            <tr className="cursor-pointer hover:bg-slate-600 transition-colors" onClick={() => fetchCarById(car.id)} key={car.id}>
               <td className="text-center border px-4 py-2">{car.id}</td>
-              <td className="text-center border px-4 py-2" onClick={() => fetchCarById(car.id)}>{car.brand}</td>
+              <td className="text-center border px-4 py-2" >{car.brand}</td>
               <td className="text-center border px-4 py-2">{car.model}</td>
               <td className="text-center border px-4 py-2">{car.color}</td>
               <td className="text-center border px-4 py-2">{car.engine}</td>
               <td className="text-center border px-4 py-2">{car.horsePower}</td>
-              <td className="text-center px-4 py-2 border">
+              <td className="text-center px-4 py-2 border" onClick={(e) => e.stopPropagation()}>
                 <div className="flex justify-end">
                   <Button
                     className="hover:font-bold mr-5"
