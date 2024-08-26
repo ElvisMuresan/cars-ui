@@ -122,7 +122,7 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
 
   return (
     <div >
-      <h2 className="text-2xl mb-4">Cars List</h2>
+      <h2 className="text-2xl mb-4 text-center">Cars List</h2>
       <div className="flex items-center space-x-4 mb-4">
       <input
         type="text"

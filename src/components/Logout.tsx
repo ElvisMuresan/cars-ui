@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from 'flowbite-react';
 import { useNavigate } from 'react-router-dom';
 import { logoutUser } from './api/car-api';
+import { FiLogOut } from 'react-icons/fi';
 
 interface LogoutProps {
   token: string;
@@ -23,7 +24,11 @@ const Logout: React.FC<LogoutProps> = ({ token, clearToken }) => {
     }
   };
 
-  return <Button onClick={handleLogout}>Logout</Button>;
+  return <div onClick={handleLogout}>
+  <Button >
+    Logout <FiLogOut className="ml-2" />
+  </Button>
+</div>;
 };
 
 export default Logout;

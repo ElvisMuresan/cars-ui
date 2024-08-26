@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import Login from './components/Login';
-import Logout from './components/Logout';
 import { Route, Routes } from 'react-router-dom';
 import bg2Image from './components/img/bg7.jpg';
 import CarsList from './components/CarsList';
 import CarDetails from './components/CarDetails';
 import AddCar from './components/AddCar';
 import EditCar from './components/EditCar';
+import UserDropdown from './components/UserDropdown';
 
 
 const App: React.FC = () => {
@@ -17,13 +17,25 @@ const App: React.FC = () => {
   setUsername('');
   };
 
+  const user = {
+    username,
+    fullName: username === 'elvis' ? 'Elvis Muresan' : 'Florin Bejera',
+    email: username === 'elvis' ? 'elvis.e.muresan@gmail.com' : 'florinpentru0306@gmail.com',
+  };
+
   return (
     <div className='text-white h-screen flex justify-center items-center bg-cover bg-center bg-no-repeat' style={{backgroundImage: `url(${bg2Image})`}}>
       {token ? (
         <>
         <div className="absolute top-4 right-4">
-          <h1>Welcome, {username}!</h1>
-          <Logout token={token} clearToken={clearToken} />
+        <UserDropdown
+              username={user.username}
+              fullName={user.fullName}
+              email={user.email}
+              token={token}
+              clearToken={clearToken}           
+        />
+
         </div>
         <Routes>
             <Route path="/" element={<CarsList token={token} />} />
