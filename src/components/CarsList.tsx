@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { FaSortUp, FaSortDown } from 'react-icons/fa';
-import { Button } from 'flowbite-react';
+import { Button, Modal } from 'flowbite-react';
 
 interface Car {
   id: number;
@@ -24,6 +24,8 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
   const [searchTerm, setSearchTerm] = useState<string>(''); 
   const [sortKey, setSortKey] = useState<keyof Car>('id');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc'); 
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false); // Starea pentru vizibilitatea popup-ului
+  const [selectedCar, setSelectedCar] = useState<Car | null>(null); // Mașina selectată pentru ștergere
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -53,6 +55,26 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
     const order = sortKey === key && sortOrder === 'asc' ? 'desc' : 'asc';
     setSortKey(key);
     setSortOrder(order);
+  };
+
+  const handleDeleteClick = (car: Car) => {
+    setSelectedCar(car)
+    setShowDeleteModal(true)
+  }
+
+  const deleteCar = async () => {
+    if(!selectedCar) return;
+    try {
+      await axios.delete(`http://localhost:3000/cars/${selectedCar.id}`, {
+        headers: {
+          Authorization: token,
+        },
+      });
+      setCars(cars.filter(car => car.id !== selectedCar.id));
+      setShowDeleteModal(false)
+    } catch (error) {
+      console.error('Failed to delete car', error);
+    }
   };
 
   const filteredCars = cars.filter(car => 
@@ -141,6 +163,7 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
                     className="hover:font-bold mr-5"
                     color="failure"
                     gradientMonochrome="failure"
+                    onClick={() => handleDeleteClick(car)}
                   >
                     Delete
                   </Button>
@@ -157,6 +180,26 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
           ))}
         </tbody>
       </table>
+      {showDeleteModal && selectedCar && (
+        <Modal show={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
+          <Modal.Header>
+            Confirm Delete
+          </Modal.Header>
+          <Modal.Body>
+            <p>
+              Are you sure you want to delete the car <strong>{selectedCar.brand} {selectedCar.model}</strong>?
+            </p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button color="failure" onClick={deleteCar}>
+              Confirm
+            </Button>
+            <Button color="gray" onClick={() => setShowDeleteModal(false)}>
+              Cancel
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      )}
     </div>
   );
 };
