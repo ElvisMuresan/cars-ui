@@ -53,3 +53,16 @@ export const logoutUser = async (token: string) => {
         throw new Error ('Failed to delete car');
     }
   };
+
+  export const deleteAllCars = async (ids: number[], token: string) => {
+    try {
+        await axios.delete(`${BASE_URL}/cars`, {
+            headers: {
+                Authorization: token,
+            },
+            data: {ids},
+        });
+    } catch (error) {
+        throw new Error ('Failed to delete car');
+    }
+  };

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { FaSortUp, FaSortDown } from 'react-icons/fa';
 import { Button, Modal } from 'flowbite-react';
-import { deleteCarById, fetchCars } from './api/car-api';
+import { deleteAllCars, deleteCarById, fetchCars } from './api/car-api';
 
 interface Car {
   id: number;
@@ -76,16 +75,11 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
     setShowBulkDeleteModal(true);
   };
 
-  const bulkDeleteCars = async () => {
+  const handleBulkDeleteCars = async () => {
     try {
       const ids = cars.map(car => car.id);
-      await axios.delete('http://localhost:3000/cars', {
-        headers: {
-          Authorization: token,
-        },
-        data: { ids },
-      });
-      setCars([]); // Golește lista de mașini după ștergerea în bloc
+      await deleteAllCars(ids, token)
+      setCars([]); 
       setShowBulkDeleteModal(false); 
     } catch (error) {
       console.error('Failed to delete cars', error);
@@ -228,7 +222,7 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
             <p>Are you sure you want to delete all cars?</p>
           </Modal.Body>
           <Modal.Footer>
-            <Button color="failure" onClick={bulkDeleteCars}>
+            <Button color="failure" onClick={handleBulkDeleteCars}>
               Confirm
             </Button>
             <Button color="gray" onClick={() => setShowBulkDeleteModal(false)}>
