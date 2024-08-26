@@ -28,7 +28,6 @@ const Login: React.FC<LoginProps> = ({ setToken, setUsername }) => {
   };
 
   return (
-    <div>
       <div className='bg-slate-800 border border-slate-400 rounded-md p-24 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative'>
         <h1 className='text-4xl text-white font-bold text-center mb-6'>Login</h1>
         <form onSubmit={handleLogin}>
@@ -70,7 +69,6 @@ const Login: React.FC<LoginProps> = ({ setToken, setUsername }) => {
           <Button className='w-full mb-4 text-[18px] mt-6 rounded-full py-2' type="submit">Login</Button>
         </form>
       </div>
-    </div>
   );
 };
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaSortUp, FaSortDown } from 'react-icons/fa';
-import { Button, Modal } from 'flowbite-react';
+import { Button } from 'flowbite-react';
 import { deleteAllCars, deleteCarById, fetchCars } from './api/car-api';
 
 interface Car {
@@ -192,45 +192,59 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
           ))}
         </tbody>
       </table>
+
       {showDeleteModal && selectedCar && (
-        <Modal show={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
-          <Modal.Header>
-            Confirm Delete
-          </Modal.Header>
-          <Modal.Body>
-            <p>
-              Are you sure you want to delete the car <strong>{selectedCar.brand} {selectedCar.model}</strong>?
-            </p>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button color="failure" onClick={handleDeleteCar}>
-              Confirm
-            </Button>
-            <Button color="gray" onClick={() => setShowDeleteModal(false)}>
-              Cancel
-            </Button>
-          </Modal.Footer>
-        </Modal>
+        <div className="fixed inset-0 flex items-center justify-center z-50" onClick={() => setShowDeleteModal(false)}>
+          <div className="absolute inset-0 bg-black opacity-50"></div>
+          <div 
+            className='bg-slate-800 border border-slate-400 rounded-md p-24 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative z-10'
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 className='text-4xl text-white font-bold text-center mb-6'>Confirm Delete</h2>
+            <div className='relative my-4 text-center'>
+              <p className='text-white'>
+                Are you sure you want to delete the car <strong>{selectedCar.brand} {selectedCar.model}</strong>?
+              </p>
+            </div>
+            <div className="flex justify-center mt-8">
+              <Button color="failure" onClick={handleDeleteCar} className='mx-2 w-full text-[18px] rounded-full py-2'>
+                Confirm
+              </Button>
+              <Button color="gray" onClick={() => setShowDeleteModal(false)} className='mx-2 w-full text-[18px] rounded-full py-2'>
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </div>
       )}
 
-      {showBulkDeleteModal && (
-        <Modal show={showBulkDeleteModal} onClose={() => setShowBulkDeleteModal(false)}>
-          <Modal.Header>
-            Confirm Bulk Delete
-          </Modal.Header>
-          <Modal.Body>
-            <p>Are you sure you want to delete all cars?</p>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button color="failure" onClick={handleBulkDeleteCars}>
-              Confirm
-            </Button>
-            <Button color="gray" onClick={() => setShowBulkDeleteModal(false)}>
-              Cancel
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      )}
+
+        {showBulkDeleteModal && (
+          <div className="fixed inset-0 flex items-center justify-center z-50" onClick={() => setShowBulkDeleteModal(false)}>
+            <div className="absolute inset-0 bg-black opacity-50"></div>
+            <div 
+              className='bg-slate-800 border border-slate-400 rounded-md p-24 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative z-10'
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h2 className='text-4xl text-white font-bold text-center mb-6'>Confirm Bulk Delete</h2>
+              <div className='relative my-4 text-center'>
+                <p className='text-white'>
+                  Are you sure you want to delete all cars?
+                </p>
+              </div>
+              <div className="flex justify-center mt-8">
+                <Button color="failure" onClick={handleBulkDeleteCars} className='mx-2 w-full text-[18px] rounded-full py-2'>
+                  Confirm
+                </Button>
+                <Button color="gray" onClick={() => setShowBulkDeleteModal(false)} className='mx-2 w-full text-[18px] rounded-full py-2'>
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
+
     </div>
   );
 };
