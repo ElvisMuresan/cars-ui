@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import { fetchCarById } from './api/car-api';
 
 interface Car {
   id: number;
@@ -22,14 +22,10 @@ const CarDetails: React.FC<CarDetailsProps> = ({ token }) => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchCar = async () => {
+    const loadCar = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/cars/${id}`, {
-          headers: {
-            Authorization: token,
-          },
-        });
-        setCar(response.data);
+        const carData = await fetchCarById(Number(id), token)
+        setCar(carData);
         setLoading(false);
       } catch (err) {
         setError('Failed to fetch car details');
@@ -37,7 +33,7 @@ const CarDetails: React.FC<CarDetailsProps> = ({ token }) => {
       }
     };
 
-    fetchCar();
+    loadCar();
   }, [id, token]);
 
   if (loading) {

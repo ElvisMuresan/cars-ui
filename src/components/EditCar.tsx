@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from 'flowbite-react';
+import { fetchCarById, updateCarById } from './api/car-api';
 
 interface EditCarProps {
   token: string;
@@ -17,14 +17,9 @@ const EditCar: React.FC<EditCarProps> = ({ token }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchCar = async () => {
+    const loadCar = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/cars/${id}`, {
-          headers: {
-            Authorization: token,
-          },
-        });
-        const car = response.data;
+        const car = await fetchCarById(Number(id), token)
         setBrand(car.brand);
         setModel(car.model);
         setColor(car.color);
@@ -35,22 +30,14 @@ const EditCar: React.FC<EditCarProps> = ({ token }) => {
       }
     };
 
-    fetchCar();
+    loadCar();
   }, [id, token]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.put(
-        `http://localhost:3000/cars/${id}`,
-        { brand, model, color, engine, horsePower },
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
-      navigate('/'); // Redirecționează la lista de mașini după actualizare
+      await updateCarById(Number(id), {brand, model, color, engine, horsePower}, token)
+      navigate('/'); 
     } catch (error) {
       console.error('Failed to update car', error);
     }
