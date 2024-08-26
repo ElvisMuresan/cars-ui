@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { FaSortUp, FaSortDown } from 'react-icons/fa';
 import { Button, Modal } from 'flowbite-react';
+import { fetchCars } from './api/car-api';
 
 interface Car {
   id: number;
@@ -30,22 +31,19 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    const fetchCars = async () => {
+    const loadCars = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/cars', {
-          headers: {
-            Authorization: token,
-          },
-        });
-        setCars(response.data);
+        const data = await fetchCars(token)
+        setCars(data);
         setLoading(false);
       } catch (err) {
-        setError('Failed to fetch cars');
+        const error = err as Error
+        setError(error.message);
         setLoading(false);
       }
     };
 
-    fetchCars();
+    loadCars();
   }, [token]);
 
   const fetchCarById = (id: number) => {
