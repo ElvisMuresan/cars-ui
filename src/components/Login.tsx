@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Button } from 'flowbite-react';
 import { BiUser } from "react-icons/bi";
 import { AiOutlineUnlock } from "react-icons/ai";
+import { loginUser } from './api/car-api';
 
 interface LoginProps {
   setToken: (token: string) => void;
@@ -17,14 +17,11 @@ const Login: React.FC<LoginProps> = ({ setToken, setUsername }) => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/login', {
-        username,
-        password,
-      });
-      setToken(response.data.user.token);
-      setUsername(response.data.user.username);
-      localStorage.setItem('token', response.data.user.token);
-      localStorage.setItem('username', response.data.user.username);
+      const data = await loginUser(username, password)
+      setToken(data.user.token);
+      setUsername(data.user.username);
+      localStorage.setItem('token', data.user.token);
+      localStorage.setItem('username', data.user.username);
     } catch (err) {
       setError('Invalid credentials');
     }
