@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dropdown, Avatar } from 'flowbite-react';
+import { Dropdown } from 'flowbite-react';
 import Logout from './Logout';
 
 interface UserDropdownProps {
@@ -15,7 +15,11 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ username, fullName, email, 
 
   return (
     <Dropdown
-      label={<Avatar placeholderInitials={initial} rounded={true} />}
+    label={
+        <div className="bg-cyan-700 text-white h-14 w-14 flex items-center justify-center font-bold rounded mr-4">
+          {initial}
+        </div>
+      }
       arrowIcon={false}
       inline={true}
     >
