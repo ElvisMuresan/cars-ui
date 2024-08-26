@@ -27,14 +27,15 @@ const App: React.FC = () => {
     <div className='text-white h-screen flex justify-center items-center bg-cover bg-center bg-no-repeat' style={{backgroundImage: `url(${bg2Image})`}}>
       {token ? (
         <>
-        <div className="absolute top-4 right-4">
-        <UserDropdown
-              username={user.username}
-              fullName={user.fullName}
-              email={user.email}
-              token={token}
-              clearToken={clearToken}           
-        />
+        <div className="absolute top-4 right-4 flex items-center space-x-4">
+          <span className="text-white font-semibold">User Info</span>
+          <UserDropdown
+                username={user.username}
+                fullName={user.fullName}
+                email={user.email}
+                token={token}
+                clearToken={clearToken}           
+          />
 
         </div>
         <Routes>
