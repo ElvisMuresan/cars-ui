@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'flowbite-react';
+import { AddNewCar } from './api/car-api';
 
 interface AddCarProps {
   token: string;
@@ -18,15 +18,7 @@ const AddCar: React.FC<AddCarProps> = ({ token }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post(
-        'http://localhost:3000/cars',
-        { brand, model, color, engine, horsePower },
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
+      await AddNewCar({brand, model, color, engine, horsePower}, token)
       navigate('/'); // Redirecționează la lista de mașini după adăugare
     } catch (error) {
       console.error('Failed to add car', error);

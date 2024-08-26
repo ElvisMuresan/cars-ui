@@ -66,3 +66,17 @@ export const logoutUser = async (token: string) => {
         throw new Error ('Failed to delete car');
     }
   };
+
+
+  export const AddNewCar = async(car: {brand: string; model:string; color:string; engine: string; horsePower: number}, token: string) => {
+    try {
+      await axios.post(`${BASE_URL}/cars`, car, {
+        headers: {
+          Authorization: token,
+        },
+      });
+    } catch (error) {
+      throw new Error('Failed to add a car')
+    }
+
+  }
