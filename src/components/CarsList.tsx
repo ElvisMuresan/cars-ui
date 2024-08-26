@@ -89,6 +89,8 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
   const filteredCars = cars.filter(car => 
     car.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
     car.model.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    car.color.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    car.engine.toLowerCase().includes(searchTerm.toLowerCase()) ||
     car.id.toString().includes(searchTerm) ||
     car.horsePower.toString().includes(searchTerm) 
   )
@@ -174,14 +176,12 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
                   <Button
                     className="hover:font-bold mr-5"
                     color="failure"
-                    gradientMonochrome="failure"
                     onClick={() => handleDeleteClick(car)}
                   >
                     Delete
                   </Button>
 
                   <Button
-                    gradientMonochrome="cyan"
                     onClick={() => navigateToEditCar(car.id)}
                   >
                     Edit
