@@ -24,8 +24,9 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
   const [searchTerm, setSearchTerm] = useState<string>(''); 
   const [sortKey, setSortKey] = useState<keyof Car>('id');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc'); 
-  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false); // Starea pentru vizibilitatea popup-ului
-  const [selectedCar, setSelectedCar] = useState<Car | null>(null); // Mașina selectată pentru ștergere
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false); 
+  const [showBulkDeleteModal, setShowBulkDeleteModal] = useState<boolean>(false);
+  const [selectedCar, setSelectedCar] = useState<Car | null>(null); 
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -77,6 +78,26 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
     }
   };
 
+  const handleBulkDeleteClick = () => {
+    setShowBulkDeleteModal(true);
+  };
+
+  const bulkDeleteCars = async () => {
+    try {
+      const ids = cars.map(car => car.id);
+      await axios.delete('http://localhost:3000/cars', {
+        headers: {
+          Authorization: token,
+        },
+        data: { ids },
+      });
+      setCars([]); // Golește lista de mașini după ștergerea în bloc
+      setShowBulkDeleteModal(false); 
+    } catch (error) {
+      console.error('Failed to delete cars', error);
+    }
+  };
+
   const filteredCars = cars.filter(car => 
     car.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
     car.model.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -121,6 +142,9 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
         onChange={(e) => setSearchTerm(e.target.value)}
       />
       <Button className='w-full text-[18px] rounded py-2 h-12 px-4 max-w-xs' onClick={navigateToAddCar}>Add New Car</Button>
+      <Button className="w-full text-[18px] rounded py-2 h-12 px-4 max-w-xs" color="failure" onClick={handleBulkDeleteClick}>
+          Delete all cars
+        </Button>
       </div>
       <table className="mt-11 table-auto mb-4 w-full bg-slate-800 border-collapse border border-slate-400 rounded-md p-14 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative">
         <thead>
@@ -195,6 +219,25 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
               Confirm
             </Button>
             <Button color="gray" onClick={() => setShowDeleteModal(false)}>
+              Cancel
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      )}
+
+      {showBulkDeleteModal && (
+        <Modal show={showBulkDeleteModal} onClose={() => setShowBulkDeleteModal(false)}>
+          <Modal.Header>
+            Confirm Bulk Delete
+          </Modal.Header>
+          <Modal.Body>
+            <p>Are you sure you want to delete all cars?</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button color="failure" onClick={bulkDeleteCars}>
+              Confirm
+            </Button>
+            <Button color="gray" onClick={() => setShowBulkDeleteModal(false)}>
               Cancel
             </Button>
           </Modal.Footer>
