@@ -49,17 +49,30 @@ const CarDetails: React.FC<CarDetailsProps> = ({ token }) => {
   }
 
   return (
-    <div className="mt-11 table-auto mb-4 w-full bg-slate-800 border-collapse border border-slate-400 rounded-md p-14 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative">
-      <h2 className="text-3xl mb-4">Car Details</h2>
-      <ul>
-        <li><strong>ID:</strong> {car.id}</li>
-        <li><strong>Brand:</strong> {car.brand}</li>
-        <li><strong>Model:</strong> {car.model}</li>
-        <li><strong>Color:</strong> {car.color}</li>
-        <li><strong>Engine:</strong> {car.engine}</li>
-        <li><strong>HorsePower:</strong> {car.horsePower}</li>
+    <div className="bg-slate-800 border border-slate-400 rounded-md p-16 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative max-w-lg mx-auto">
+      <h2 className="text-4xl text-white font-bold text-center mb-8">Car Details</h2>
+      <ul className="text-white space-y-4">
+        <li>
+          <span className="font-semibold">ID:</span> {car.id}
+        </li>
+        <li>
+          <span className="font-semibold">Brand:</span> {car.brand}
+        </li>
+        <li>
+          <span className="font-semibold">Model:</span> {car.model}
+        </li>
+        <li>
+          <span className="font-semibold">Color:</span> {car.color}
+        </li>
+        <li>
+          <span className="font-semibold">Engine:</span> {car.engine}
+        </li>
+        <li>
+          <span className="font-semibold">HorsePower:</span> {car.horsePower}
+        </li>
       </ul>
     </div>
+
   );
 };
 
