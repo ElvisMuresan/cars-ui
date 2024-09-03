@@ -29,12 +29,13 @@ export const logoutUser = async (token: string) => {
     }
   };
 
-  export const fetchCars = async (token: string) => {
+  export const fetchCars = async (token: string, searchTerm?: string) => {
     try {
         const response = await axios.get(`${BASE_URL}/cars`, {
             headers: {
                 Authorization: token,
             },
+            params: searchTerm ? {search_keyword: searchTerm } : {}
         });
         return response.data
     } catch(error) {

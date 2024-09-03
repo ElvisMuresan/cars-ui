@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaSortUp, FaSortDown } from 'react-icons/fa';
 import { Button } from 'flowbite-react';
 import { deleteAllCars, deleteCarById, fetchCars } from './api/car-api';
 
@@ -22,17 +21,18 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>(''); 
-  const [sortKey, setSortKey] = useState<keyof Car>('id');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc'); 
+  // const [sortKey, setSortKey] = useState<keyof Car>('id');
+  // const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc'); 
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false); 
   const [showBulkDeleteModal, setShowBulkDeleteModal] = useState<boolean>(false);
   const [selectedCar, setSelectedCar] = useState<Car | null>(null); 
   const navigate = useNavigate()
 
   useEffect(() => {
+    const debounceTimeout = setTimeout(() => {
     const loadCars = async () => {
       try {
-        const data = await fetchCars(token)
+        const data = await fetchCars(token, searchTerm)
         setCars(data);
         setLoading(false);
       } catch (err) {
@@ -41,19 +41,24 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
         setLoading(false);
       }
     };
+    if(searchTerm.length >= 3 || searchTerm === '') {
 
     loadCars();
-  }, [token]);
+
+  }
+}, 500)
+return () => clearTimeout(debounceTimeout);
+  }, [token, searchTerm]);
 
   const fetchCarById = (id: number) => {
     navigate(`/${id}`)
   }
 
-  const sortCars = (key: keyof Car) => {
-    const order = sortKey === key && sortOrder === 'asc' ? 'desc' : 'asc';
-    setSortKey(key);
-    setSortOrder(order);
-  };
+  // const sortCars = (key: keyof Car) => {
+  //   const order = sortKey === key && sortOrder === 'asc' ? 'desc' : 'asc';
+  //   setSortKey(key);
+  //   setSortOrder(order);
+  // };
 
   const handleDeleteClick = (car: Car) => {
     setSelectedCar(car)
@@ -86,23 +91,6 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
     }
   };
 
-  const filteredCars = cars.filter(car => 
-    car.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    car.model.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    car.color.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    car.engine.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    car.id.toString().includes(searchTerm) ||
-    car.horsePower.toString().includes(searchTerm) 
-  )
-  .sort((a, b) => {
-    if (a[sortKey] < b[sortKey]) {
-      return sortOrder === 'asc' ? -1 : 1;
-    }
-    if (a[sortKey] > b[sortKey]) {
-      return sortOrder === 'asc' ? 1 : -1;
-    }
-    return 0;
-  });
 
   if (loading) {
     return <p>Loading...</p>;
@@ -139,23 +127,23 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
       <table className="mt-11 table-auto mb-4 w-full bg-slate-800 border-collapse border border-slate-400 rounded-md p-14 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative">
         <thead>
           <tr>
-            <th className="text-center px-5 py-3 border-b cursor-pointer" onClick={() => sortCars('id')}>
-              Id {sortKey === 'id' && (sortOrder === 'asc' ? <FaSortUp className="inline-block ml-2"/> : <FaSortDown className="inline-block ml-2"/>)}
+            <th className="text-center px-5 py-3 border-b cursor-pointer">
+              Id 
             </th>
-            <th className="text-center px-5 py-3 border-b cursor-pointer" onClick={() => sortCars('brand')}>
-              Brand {sortKey === 'brand' && (sortOrder === 'asc' ? <FaSortUp className="inline-block ml-2"/> : <FaSortDown className="inline-block ml-2"/>)}
+            <th className="text-center px-5 py-3 border-b cursor-pointer">
+              Brand 
             </th>
-            <th className="text-center px-5 py-3 border-b cursor-pointer" onClick={() => sortCars('model')}>
-              Model {sortKey === 'model' && (sortOrder === 'asc' ? <FaSortUp className="inline-block ml-2"/> : <FaSortDown className="inline-block ml-2"/>)}
+            <th className="text-center px-5 py-3 border-b cursor-pointer">
+              Model 
             </th>
-            <th className="text-center px-5 py-3 border-b cursor-pointer" onClick={() => sortCars('color')}>
-              Color {sortKey === 'color' && (sortOrder === 'asc' ? <FaSortUp className="inline-block ml-2"/> : <FaSortDown className="inline-block ml-2"/>)}
+            <th className="text-center px-5 py-3 border-b cursor-pointer">
+              Color 
             </th>
-            <th className="text-center px-5 py-3 border-b cursor-pointer" onClick={() => sortCars('engine')}>
-              Engine {sortKey === 'engine' && (sortOrder === 'asc' ? <FaSortUp className="inline-block ml-2"/> : <FaSortDown className="inline-block ml-2"/>)}
+            <th className="text-center px-5 py-3 border-b cursor-pointer">
+              Engine 
             </th>
-            <th className="text-center px-5 py-3 border-b cursor-pointer" onClick={() => sortCars('horsePower')}>
-              HorsePower {sortKey === 'horsePower' && (sortOrder === 'asc' ? <FaSortUp className="inline-block ml-2"/> : <FaSortDown className="inline-block ml-2"/>)}
+            <th className="text-center px-5 py-3 border-b cursor-pointer">
+              HorsePower 
             </th>
             <th className="text-center px-5 py-3 border-b">
               Delete / Edit
@@ -163,7 +151,7 @@ const CarsList: React.FC<CarsListProps> = ({ token }) => {
           </tr>
         </thead>
         <tbody>
-          {filteredCars.map(car => (
+          {cars.map(car => (
             <tr className="cursor-pointer hover:bg-slate-600 transition-colors" onClick={() => fetchCarById(car.id)} key={car.id}>
               <td className="text-center border px-4 py-2">{car.id}</td>
               <td className="text-center border px-4 py-2" >{car.brand}</td>
